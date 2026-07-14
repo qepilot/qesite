@@ -1,5 +1,5 @@
 import Hero from '../components/Hero'
-import LogoStrip from '../components/LogoStrip'
+import InteractiveDemo from '../components/InteractiveDemo'
 import RotatingHeadline from '../components/RotatingHeadline'
 import Capabilities from '../components/Capabilities'
 import Comparison from '../components/Comparison'
@@ -13,7 +13,7 @@ export default function Home() {
   return (
     <>
       <Hero />
-      <LogoStrip />
+      <InteractiveDemo />
       <RotatingHeadline />
       <Capabilities />
       <Comparison />

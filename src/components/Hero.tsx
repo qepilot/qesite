@@ -55,10 +55,10 @@ export default function Hero() {
             Start a project
           </Link>
           <a
-            href="#workflow"
+            href="#demo"
             className="rounded-full border border-white/40 bg-white/10 px-7 py-3.5 text-sm font-medium text-white backdrop-blur-sm transition-colors hover:bg-white/20"
           >
-            See the workflow
+            See it run
           </a>
         </motion.div>
 
