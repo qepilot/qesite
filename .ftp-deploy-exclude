@@ -1,26 +1,31 @@
-# Exclude patterns for SamKirkland/FTP-Deploy-Action → Hostinger Node app root.
-# Hostinger builds from source; keep secrets and local/CI junk off the server.
+# Reference list of what stays OFF the Hostinger server.
+# The authoritative copy is the `exclude:` block in .github/workflows/deploy.yml —
+# keep the two in sync. The prebuilt/prerendered dist/ IS shipped now (Hostinger
+# serves it as-is and must not rebuild), so dist/ is intentionally NOT excluded.
 
 .git/**
 .github/**
 .cursor/**
 .claude/**
 node_modules/**
-dist/**
-dist-ssr/**
-deploy-artifacts/**
+src/**
+public/**
 e2e/**
+scripts/**
 test-results/**
 playwright-report/**
 blob-report/**
 playwright/.cache/**
+deploy-artifacts/**
 **/.DS_Store
 .env
 .env.*
 !.env.example
 *.local
 *.log
-qapilot-hostinger-deploy.zip
-**/qepilot-hostinger-deploy.zip
-DEPLOY-HOSTINGER.md
-README.md
+index.html
+vite.config.ts
+tsconfig*.json
+playwright.config.ts
+.oxlintrc.json
+*.md

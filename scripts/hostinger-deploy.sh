@@ -1,11 +1,17 @@
 #!/usr/bin/env bash
-# Package QEPilot source for Hostinger Node.js hosting.
-# Hostinger runs `npm install` + `npm run build` itself — do NOT ship
-# node_modules/, dist/, or .env.
+# Package QEPilot for Hostinger Node.js hosting.
+# We build AND prerender locally, then ship the finished dist/ so Hostinger just
+# serves it (Hostinger can't run Chromium, so it must NOT rebuild — that would
+# drop the prerendered HTML AI crawlers rely on). node_modules/ and .env are
+# still left out: Hostinger installs runtime deps, secrets live in hPanel.
+#
+# Prerendering needs a local Chromium. `npm run build:prerender` degrades to a
+# plain (non-prerendered) build if none is available — install one with
+# `npx playwright install chromium` for full benefit.
 #
 # Usage:
-#   ./scripts/hostinger-deploy.sh              # write zip only
-#   ./scripts/hostinger-deploy.sh --upload      # zip + FTP upload (needs .env.deploy)
+#   ./scripts/hostinger-deploy.sh              # build + write zip only
+#   ./scripts/hostinger-deploy.sh --upload      # build + zip + FTP upload (needs .env.deploy)
 #
 # Optional .env.deploy (gitignored):
 #   FTP_SERVER=ftp.example.hostinger.com
@@ -38,25 +44,27 @@ for arg in "$@"; do
   esac
 done
 
+echo "→ Building + prerendering…"
+npm run build:prerender
+
+if [[ ! -f "$ROOT/dist/index.html" ]]; then
+  echo "Build did not produce dist/index.html — aborting." >&2
+  exit 1
+fi
+
 mkdir -p "$OUT_DIR"
 rm -f "$ZIP_PATH"
 
-echo "→ Packaging source for Hostinger…"
+echo "→ Packaging prebuilt site for Hostinger…"
 
-# Match DEPLOY-HOSTINGER.md: full source tree Hostinger needs to build.
+# Ship the runtime files + the prebuilt/prerendered dist. No source or build
+# tooling — Hostinger serves this as-is and must not rebuild.
 zip -r "$ZIP_PATH" \
   package.json \
   package-lock.json \
   server.js \
-  index.html \
-  vite.config.ts \
-  tsconfig.json \
-  tsconfig.app.json \
-  tsconfig.node.json \
-  .oxlintrc.json \
   .env.example \
-  public \
-  src \
+  dist \
   -x "*.DS_Store" \
   >/dev/null
 
@@ -67,7 +75,7 @@ echo "…"
 if [[ "$UPLOAD" != true ]]; then
   echo
   echo "Zip ready. Upload & extract in hPanel File Manager, then:"
-  echo "  Run NPM Install → npm run build → Restart"
+  echo "  Run NPM Install (runtime deps only) → Restart   # do NOT run a build"
   echo
   echo "Or set .env.deploy and re-run with --upload."
   exit 0
@@ -114,4 +122,4 @@ else
 fi
 
 echo "✓ Upload complete."
-echo "In hPanel Node.js app: Run NPM Install (if deps changed) → Build → Restart."
+echo "In hPanel Node.js app: Run NPM Install (if deps changed) → Restart. Do NOT run a build."

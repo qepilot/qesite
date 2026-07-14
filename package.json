@@ -9,6 +9,8 @@
     "server": "node server.js",
     "start": "node server.js",
     "build": "tsc -b && vite build",
+    "build:prerender": "npm run build && node scripts/prerender.mjs",
+    "make:og": "node scripts/make-og-image.mjs",
     "lint": "oxlint",
     "preview": "vite preview",
     "test:e2e": "playwright test",

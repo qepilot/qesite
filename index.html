@@ -4,7 +4,144 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>QEPilot — AI QA Engineer</title>
+
+    <!-- Consent management (Secure Privacy) — loaded first so it can gate analytics cookies -->
+    <script src="https://app.secureprivacy.ai/script/6a55b4086f27920a3725a659.js"></script>
+
+    <!-- Google Analytics 4 (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VXWWK8KSP1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || []
+      function gtag() {
+        dataLayer.push(arguments)
+      }
+      gtag('js', new Date())
+      gtag('config', 'G-VXWWK8KSP1')
+    </script>
+
+    <!-- Primary meta -->
+    <title>QEPilot — AI QA Engineer for Jira &amp; Linear</title>
+    <meta
+      name="description"
+      content="QEPilot is an AI QA engineer for Jira & Linear. It reads tickets, writes reviewable test cases grounded in your product's domain, and ships approved cases as Playwright automation in your CI."
+    />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+    <link rel="canonical" href="https://qapilot.live/" />
+    <meta name="theme-color" content="#0b0b0f" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="QEPilot" />
+    <meta property="og:url" content="https://qapilot.live/" />
+    <meta property="og:title" content="QEPilot — AI QA Engineer for Jira & Linear" />
+    <meta
+      property="og:description"
+      content="Jira in, tested automation out. QEPilot reads your tickets, writes reviewable test cases grounded in your domain, and ships approved cases as Playwright automation in your CI."
+    />
+    <meta property="og:image" content="https://qapilot.live/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="QEPilot — AI QA Engineer for Jira & Linear" />
+    <meta
+      name="twitter:description"
+      content="Jira in, tested automation out. QEPilot writes reviewable test cases and ships approved cases as Playwright automation in your CI."
+    />
+    <meta name="twitter:image" content="https://qapilot.live/og-image.png" />
+
+    <!-- Structured data: Organization -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "QEPilot",
+        "url": "https://qapilot.live/",
+        "logo": "https://qapilot.live/favicon.svg",
+        "email": "info@qepilot.com",
+        "description": "QEPilot is an AI QA engineer that turns Jira and Linear tickets into reviewed test cases and Playwright automation."
+      }
+    </script>
+
+    <!-- Structured data: SoftwareApplication -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "QEPilot",
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "Web",
+        "url": "https://qapilot.live/",
+        "description": "QEPilot is an AI QA engineer for Jira and Linear. It reads tickets, writes reviewable manual test cases grounded in your product's domain, and ships approved cases as Playwright automation in your CI.",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD",
+          "description": "Free first ticket, no setup required"
+        }
+      }
+    </script>
+
+    <!-- Structured data: WebSite -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "QEPilot",
+        "url": "https://qapilot.live/"
+      }
+    </script>
+
+    <!-- Structured data: FAQPage -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What is QEPilot, exactly?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "QEPilot is an AI QA engineer that works from your Jira or Linear tickets. It reads the ticket, grounds test design in your product's real domain knowledge, writes manual test cases for review, and automates approved cases with Playwright."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How is this different from just asking ChatGPT?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "A generic prompt gives you a generic test outline with no context on your product. QEPilot retrieves your actual specs, prior tickets, and business rules before writing a single case — and it ships working Playwright code, not just suggestions."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Do you write real Playwright code, or just recommendations?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Real, runnable Playwright specs via Playwright-MCP, wired into your existing CI pipeline. Nothing lands until the manual test case behind it is approved."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What if the ticket is ambiguous?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "QEPilot flags ambiguity in the ticket itself and asks before writing a case on a guess — the same thing a careful human QA engineer would do."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How long does it take to get started?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Send one ticket and QEPilot can show you the manual test cases and Playwright automation it produces before you commit to anything ongoing."
+            }
+          }
+        ]
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>

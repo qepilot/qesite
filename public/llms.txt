@@ -1,0 +1,28 @@
+# QEPilot
+
+> QEPilot is an AI QA engineer for Jira and Linear. It reads a ticket, grounds test design in your product's real domain knowledge (via RAG over your specs, prior tickets, and business rules), writes manual test cases for human review, and turns approved cases into runnable Playwright automation wired into your CI.
+
+QEPilot is positioned as a QA *hire*, not a script or a chatbot: it does the QA work teams don't have time to write. A human approves every test case before anything runs against real environments.
+
+## What QEPilot does
+
+- **Jira / Linear ticket comprehension**: parses acceptance criteria, user stories, and linked docs to extract real test intent, and flags ambiguity before it becomes a bug.
+- **Domain-grounded test design**: retrieves your product specs, prior tickets, and business rules so every test case reflects how your system actually behaves.
+- **Manual test case authoring**: structured, traceable test cases mapped to acceptance criteria, in your team's existing format, for stakeholder review.
+- **Playwright automation**: approved manual cases become executable Playwright specs via Playwright-MCP, wired directly into your CI suite on every PR.
+
+## Key facts
+
+- **Category**: AI QA engineer / automated software testing / test automation.
+- **Works with**: Jira, Linear, Playwright, Playwright-MCP, CI pipelines.
+- **Control model**: nothing runs against real environments without human sign-off; ambiguous acceptance criteria are flagged rather than guessed.
+- **Getting started**: free first ticket, no setup project required — send one ticket to see the manual test cases and Playwright automation it produces.
+
+## Links
+
+- [Home](https://qapilot.live/): product overview, how it works, FAQ.
+- [Start a project](https://qapilot.live/start): send a ticket to try QEPilot.
+
+## Contact
+
+- Email: info@qepilot.com

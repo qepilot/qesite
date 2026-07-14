@@ -43,6 +43,16 @@ app.post('/api/start-project', async (req, res) => {
     return res.status(400).json({ ok: false, error: 'Name, email, and QA pain point are required.' })
   }
 
+  if (!process.env.SMTP_USER || !process.env.SMTP_APP_PASSWORD) {
+    console.error(
+      'Missing SMTP_USER and/or SMTP_APP_PASSWORD. Set them in Hostinger Node.js → Environment Variables, then Restart.',
+    )
+    return res.status(500).json({
+      ok: false,
+      error: 'Email is not configured on the server. Please try again later.',
+    })
+  }
+
   const bodyText = Object.entries(fieldLabels)
     .filter(([key]) => form[key])
     .map(([key, label]) => `${label}: ${form[key]}`)
@@ -100,4 +110,7 @@ app.use((req, res, next) => {
 const port = process.env.API_PORT || process.env.PORT || 3001
 app.listen(port, () => {
   console.log(`QEPilot server listening on http://localhost:${port}`)
+  if (!process.env.SMTP_USER || !process.env.SMTP_APP_PASSWORD) {
+    console.warn('WARNING: SMTP_USER / SMTP_APP_PASSWORD not set — /api/start-project will fail until configured.')
+  }
 })
