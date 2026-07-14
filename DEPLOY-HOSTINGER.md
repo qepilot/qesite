@@ -17,8 +17,15 @@ which Hostinger's build server can't run. So it's split in two:
   `scripts/inject-prerender.mjs`, which injects those snapshots into the fresh
   Vite output. This is pure file copying, so it runs fine on Hostinger.
 
-**Whenever you change page content or layout, refresh the snapshots** and commit
-them:
+**Snapshots refresh automatically.** The `.github/workflows/prerender-snapshots.yml`
+workflow re-runs `npm run prerender` and commits `prerendered/` whenever
+page-affecting source changes (`src/**`, `index.html`, `public/**`) land on
+`main` — so you never have to run it by hand. Because it commits *after* the push
+that triggered it, Hostinger's build for that push uses the previous snapshots;
+the auto-commit then lands and Hostinger's next pull serves the fresh ones (a
+one-cycle lag on body text only — head SEO is always current).
+
+To refresh immediately yourself (optional / offline fallback):
 
 ```bash
 npm run prerender          # needs a local Chromium (npx playwright install chromium)

@@ -61,6 +61,13 @@ async function main() {
   }
 
   const page = await browser.newPage()
+  // Freeze time so the output is deterministic: timer-driven UI (the rotating
+  // headline flips every 2.4s) and framer-motion entrance animations would
+  // otherwise land in a different state each run, making the auto-regen CI job
+  // commit noisy diffs forever. We install a fake clock, then advance a fixed
+  // 1s — long enough for entrance animations (<0.4s) to settle, short of the
+  // 2.4s headline tick — so every capture is byte-identical for the same source.
+  await page.clock.install()
   await page.route('**/*', (route) =>
     BLOCK_HOSTS.some((h) => route.request().url().includes(h)) ? route.abort() : route.continue(),
   )
@@ -73,7 +80,7 @@ async function main() {
         const el = document.getElementById('root')
         return el && el.children.length > 0
       })
-      await page.waitForTimeout(600) // let entrance animations settle
+      await page.clock.runFor(1000) // settle entrance animations, deterministically
       const inner = await page.$eval('#root', (el) => el.innerHTML)
       const outPath = path.join(snapDir, snap)
       await fs.writeFile(outPath, inner, 'utf8')

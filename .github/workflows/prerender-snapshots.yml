@@ -1,0 +1,64 @@
+name: Refresh prerender snapshots
+
+# Regenerates the committed prerendered/ snapshots whenever page-affecting source
+# changes, so nobody has to run `npm run prerender` by hand. Hostinger picks up
+# the refreshed snapshots on its next pull/build.
+#
+# Loop-safe by construction:
+#  - the paths filter excludes prerendered/, so this job's own commit can't
+#    re-trigger it, and
+#  - the commit is pushed with GITHUB_TOKEN, whose pushes don't start new runs.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/**'
+      - 'index.html'
+      - 'public/**'
+      - 'package-lock.json'
+      - 'scripts/capture-prerender.mjs'
+  workflow_dispatch:
+
+concurrency:
+  group: prerender-snapshots
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright Chromium
+        run: npx playwright install chromium --with-deps
+
+      - name: Regenerate snapshots
+        run: npm run prerender
+
+      - name: Commit refreshed snapshots if changed
+        run: |
+          if [[ -n "$(git status --porcelain prerendered/)" ]]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add prerendered/
+            git commit -m "chore: refresh prerender snapshots [skip ci]"
+            git push
+            echo "Snapshots updated and pushed."
+          else
+            echo "Snapshots already up to date — nothing to commit."
+          fi
