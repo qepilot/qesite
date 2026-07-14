@@ -2,10 +2,13 @@ import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import Logo from './Logo'
 
+// `to` renders a client-side Link (real page); `href` renders an anchor that
+// jumps to a homepage section (works from any page).
 const links = [
   { label: 'Capabilities', href: '/#capabilities' },
   { label: 'How it works', href: '/#workflow' },
-  { label: 'Results', href: '/#results' },
+  { label: 'Use cases', to: '/use-cases' },
+  { label: 'Integrations', to: '/integrations' },
   { label: 'FAQ', href: '/#faq' },
 ]
 
@@ -27,10 +30,16 @@ export default function Navbar() {
 
         <ul className="hidden md:flex items-center gap-8 text-sm font-medium text-text">
           {links.map((link) => (
-            <li key={link.href}>
-              <a href={link.href} className="transition-colors hover:text-ink">
-                {link.label}
-              </a>
+            <li key={link.label}>
+              {link.to ? (
+                <Link to={link.to} className="transition-colors hover:text-ink">
+                  {link.label}
+                </Link>
+              ) : (
+                <a href={link.href} className="transition-colors hover:text-ink">
+                  {link.label}
+                </a>
+              )}
             </li>
           ))}
         </ul>

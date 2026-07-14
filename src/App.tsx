@@ -3,6 +3,9 @@ import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import Home from './pages/Home'
 import StartProject from './pages/StartProject'
+import Integrations from './pages/Integrations'
+import UseCases from './pages/UseCases'
+import VsChatGPT from './pages/VsChatGPT'
 
 function App() {
   return (
@@ -12,6 +15,9 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/start" element={<StartProject />} />
+          <Route path="/integrations" element={<Integrations />} />
+          <Route path="/use-cases" element={<UseCases />} />
+          <Route path="/vs-chatgpt" element={<VsChatGPT />} />
         </Routes>
       </main>
       <Footer />

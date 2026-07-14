@@ -22,6 +22,9 @@ const snapDir = path.join(root, 'prerendered')
 const ROUTES = [
   { route: '/', snap: 'home.html' },
   { route: '/start', snap: 'start.html' },
+  { route: '/use-cases', snap: 'use-cases.html' },
+  { route: '/integrations', snap: 'integrations.html' },
+  { route: '/vs-chatgpt', snap: 'vs-chatgpt.html' },
 ]
 
 // Analytics / consent scripts are irrelevant to the snapshot and would fire real

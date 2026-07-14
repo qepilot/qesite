@@ -18,7 +18,8 @@ const snapDir = path.join(root, 'prerendered')
 // snapshot -> output file (+ per-route <head> overrides so secondary routes don't
 // inherit the home page's title/canonical). Keep in sync with capture-prerender.mjs.
 const ROUTES = [
-  { snap: 'home.html', out: 'index.html', canonical: 'https://qapilot.live/' },
+  // `faq: true` keeps the FAQPage JSON-LD (only valid where the FAQ is visible).
+  { snap: 'home.html', out: 'index.html', canonical: 'https://qapilot.live/', faq: true },
   {
     snap: 'start.html',
     out: 'start/index.html',
@@ -26,6 +27,30 @@ const ROUTES = [
     title: 'Start a project — QEPilot',
     description:
       'Send QEPilot a Jira or Linear ticket and see the manual test cases and Playwright automation it produces. Free first ticket, no setup required.',
+  },
+  {
+    snap: 'use-cases.html',
+    out: 'use-cases/index.html',
+    canonical: 'https://qapilot.live/use-cases',
+    title: 'Use cases — QEPilot AI QA Engineer',
+    description:
+      'How QEPilot clears a QA backlog across new feature tickets, regression bugs, ambiguous specs, and legacy test debt — reviewed cases automated with Playwright.',
+  },
+  {
+    snap: 'integrations.html',
+    out: 'integrations/index.html',
+    canonical: 'https://qapilot.live/integrations',
+    title: 'Integrations — Jira, Linear, Playwright & CI | QEPilot',
+    description:
+      'QEPilot works with Jira, Linear, Playwright, Playwright-MCP, and your CI — grounded in your product docs. No new platform, no scripts to maintain.',
+  },
+  {
+    snap: 'vs-chatgpt.html',
+    out: 'vs-chatgpt/index.html',
+    canonical: 'https://qapilot.live/vs-chatgpt',
+    title: 'QEPilot vs ChatGPT for QA — a side-by-side comparison',
+    description:
+      'Generic AI sketches a test plan; QEPilot ships reviewed, traceable coverage grounded in your product and running in your CI. See the difference side by side.',
   },
 ]
 
@@ -50,6 +75,17 @@ function applyHead(html, { canonical, title, description }) {
   return html
 }
 
+// Remove the FAQPage JSON-LD block — Google's structured-data policy requires
+// FAQ markup to match FAQ content that's visible on that page.
+function stripFaqSchema(html) {
+  // Tempered match: only the single ld+json block that contains FAQPage — the
+  // (?!</script>) guards stop the match from spanning into other schema blocks.
+  return html.replace(
+    /\s*<script type="application\/ld\+json">(?:(?!<\/script>)[\s\S])*?"@type":\s*"FAQPage"(?:(?!<\/script>)[\s\S])*?<\/script>/,
+    '',
+  )
+}
+
 function injectRoot(baseHtml, snapshot) {
   const replaced = baseHtml.replace(/<div id="root">\s*<\/div>/, `<div id="root">${snapshot}</div>`)
   if (replaced === baseHtml) throw new Error('could not find an empty <div id="root"></div> to inject into')
@@ -71,7 +107,8 @@ for (const r of ROUTES) {
     continue
   }
   const snapshot = fs.readFileSync(snapPath, 'utf8')
-  const html = applyHead(injectRoot(base, snapshot), r)
+  let html = applyHead(injectRoot(base, snapshot), r)
+  if (!r.faq) html = stripFaqSchema(html)
   const outPath = path.join(distDir, r.out)
   fs.mkdirSync(path.dirname(outPath), { recursive: true })
   fs.writeFileSync(outPath, html, 'utf8')
