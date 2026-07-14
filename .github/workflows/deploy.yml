@@ -39,13 +39,24 @@ jobs:
       - name: Build + prerender
         run: npm run build:prerender
 
+      # The FTP action requires server-dir to end with "/". Normalize the secret
+      # so the deploy works whether or not it was stored with a trailing slash.
+      - name: Resolve server dir (ensure trailing slash)
+        id: ftpdir
+        env:
+          RAW_DIR: ${{ secrets.FTP_SERVER_DIR }}
+        run: |
+          dir="${RAW_DIR%/}/"
+          echo "::add-mask::$dir"
+          echo "dir=$dir" >> "$GITHUB_OUTPUT"
+
       - name: Deploy prebuilt site to Hostinger over FTPS
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: ${{ secrets.FTP_SERVER_DIR }}
+          server-dir: ${{ steps.ftpdir.outputs.dir }}
           protocol: ftps
           # Ship runtime files + the prebuilt/prerendered dist ONLY. Keeping source
           # and build tooling off the server means Hostinger can't rebuild and
