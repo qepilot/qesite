@@ -5,10 +5,10 @@ import Logo from './Logo'
 // `to` renders a client-side Link (real page); `href` renders an anchor that
 // jumps to a homepage section (works from any page).
 const links = [
-  { label: 'Capabilities', href: '/#capabilities' },
   { label: 'How it works', href: '/#workflow' },
   { label: 'Use cases', to: '/use-cases' },
   { label: 'Integrations', to: '/integrations' },
+  { label: 'Blog', to: '/blog' },
   { label: 'FAQ', href: '/#faq' },
 ]
 

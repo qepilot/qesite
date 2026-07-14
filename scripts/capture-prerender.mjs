@@ -25,6 +25,13 @@ const ROUTES = [
   { route: '/use-cases', snap: 'use-cases.html' },
   { route: '/integrations', snap: 'integrations.html' },
   { route: '/vs-chatgpt', snap: 'vs-chatgpt.html' },
+  { route: '/about', snap: 'about.html' },
+  { route: '/for-qa-engineers', snap: 'for-qa-engineers.html' },
+  { route: '/for-engineering-managers', snap: 'for-engineering-managers.html' },
+  { route: '/blog', snap: 'blog.html' },
+  { route: '/blog/why-qa-backlogs-never-shrink', snap: 'blog-why-qa-backlogs-never-shrink.html' },
+  { route: '/blog/from-jira-ticket-to-playwright-test', snap: 'blog-from-jira-ticket-to-playwright-test.html' },
+  { route: '/blog/reviewed-not-rubber-stamped', snap: 'blog-reviewed-not-rubber-stamped.html' },
 ]
 
 // Analytics / consent scripts are irrelevant to the snapshot and would fire real

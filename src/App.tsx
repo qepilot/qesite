@@ -6,6 +6,11 @@ import StartProject from './pages/StartProject'
 import Integrations from './pages/Integrations'
 import UseCases from './pages/UseCases'
 import VsChatGPT from './pages/VsChatGPT'
+import About from './pages/About'
+import ForQAEngineers from './pages/ForQAEngineers'
+import ForEngineeringManagers from './pages/ForEngineeringManagers'
+import Blog from './pages/Blog'
+import BlogPost from './pages/BlogPost'
 
 function App() {
   return (
@@ -18,6 +23,11 @@ function App() {
           <Route path="/integrations" element={<Integrations />} />
           <Route path="/use-cases" element={<UseCases />} />
           <Route path="/vs-chatgpt" element={<VsChatGPT />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/for-qa-engineers" element={<ForQAEngineers />} />
+          <Route path="/for-engineering-managers" element={<ForEngineeringManagers />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:slug" element={<BlogPost />} />
         </Routes>
       </main>
       <Footer />
