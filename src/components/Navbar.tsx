@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Link, useLocation } from 'react-router-dom'
 import Logo from './Logo'
+import { trackEvent } from '../lib/analytics'
 
 // `to` renders a client-side Link (real page); `href` renders an anchor that
 // jumps to a homepage section (works from any page).
@@ -51,11 +52,19 @@ export default function Navbar() {
             {links.map((link) => (
               <li key={link.label}>
                 {link.to ? (
-                  <Link to={link.to} className="transition-colors hover:text-ink">
+                  <Link
+                    to={link.to}
+                    onClick={() => trackEvent('nav_click', { label: link.label, menu: 'desktop' })}
+                    className="transition-colors hover:text-ink"
+                  >
                     {link.label}
                   </Link>
                 ) : (
-                  <a href={link.href} className="transition-colors hover:text-ink">
+                  <a
+                    href={link.href}
+                    onClick={() => trackEvent('nav_click', { label: link.label, menu: 'desktop' })}
+                    className="transition-colors hover:text-ink"
+                  >
                     {link.label}
                   </a>
                 )}
@@ -92,6 +101,7 @@ export default function Navbar() {
 
             <Link
               to="/start"
+              onClick={() => trackEvent('cta_click', { location: 'navbar' })}
               className="rounded-full bg-ink text-white text-sm font-medium px-5 py-2.5 transition-transform hover:scale-105 active:scale-95"
             >
               Start a project
@@ -114,6 +124,7 @@ export default function Navbar() {
                     {link.to ? (
                       <Link
                         to={link.to}
+                        onClick={() => trackEvent('nav_click', { label: link.label, menu: 'mobile' })}
                         className="block rounded-xl px-4 py-2.5 text-sm font-medium text-text transition-colors hover:bg-bg-soft hover:text-ink"
                       >
                         {link.label}
@@ -121,6 +132,7 @@ export default function Navbar() {
                     ) : (
                       <a
                         href={link.href}
+                        onClick={() => trackEvent('nav_click', { label: link.label, menu: 'mobile' })}
                         className="block rounded-xl px-4 py-2.5 text-sm font-medium text-text transition-colors hover:bg-bg-soft hover:text-ink"
                       >
                         {link.label}

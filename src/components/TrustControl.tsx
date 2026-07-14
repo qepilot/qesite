@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { trackEvent } from '../lib/analytics'
 
 const points = [
   'Every test case waits on your approval before it touches CI.',
@@ -40,6 +41,7 @@ export default function TrustControl() {
 
           <a
             href="#faq"
+            onClick={() => trackEvent('nav_click', { label: 'Read the FAQ', menu: 'inline' })}
             className="mt-8 inline-block rounded-full bg-ink px-6 py-3 text-sm font-medium text-white transition-transform hover:scale-105 active:scale-95"
           >
             Read the FAQ

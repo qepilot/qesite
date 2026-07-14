@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Link } from 'react-router-dom'
+import { trackEvent } from '../lib/analytics'
 
 type Step = {
   label: string
@@ -148,6 +149,7 @@ export default function InteractiveDemo() {
   const run = () => {
     if (step >= last) setStep(0)
     setPlaying(true)
+    trackEvent('demo_run_click', {})
   }
 
   return (
@@ -273,6 +275,7 @@ export default function InteractiveDemo() {
         <div className="mt-10 text-center">
           <Link
             to="/start"
+            onClick={() => trackEvent('cta_click', { location: 'demo' })}
             className="inline-block rounded-full bg-ink px-7 py-3 text-sm font-medium text-white transition-transform hover:scale-105 active:scale-95"
           >
             Run it on your own ticket

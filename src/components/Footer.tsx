@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import Logo from './Logo'
+import { trackEvent } from '../lib/analytics'
 
 const columns: { heading: string; links: { label: string; to: string }[] }[] = [
   {
@@ -48,6 +49,7 @@ export default function Footer() {
             </p>
             <a
               href="mailto:info@qepilot.com"
+              onClick={() => trackEvent('email_click', { location: 'footer' })}
               className="mt-4 inline-block text-sm font-medium text-accent-2 hover:underline"
             >
               info@qepilot.com
@@ -62,7 +64,16 @@ export default function Footer() {
               <ul className="mt-3 space-y-2 text-sm text-muted">
                 {col.links.map((l) => (
                   <li key={l.to}>
-                    <Link to={l.to} className="transition-colors hover:text-ink">
+                    <Link
+                      to={l.to}
+                      onClick={() =>
+                        trackEvent(l.to === '/start' ? 'cta_click' : 'nav_click', {
+                          location: 'footer',
+                          label: l.label,
+                        })
+                      }
+                      className="transition-colors hover:text-ink"
+                    >
                       {l.label}
                     </Link>
                   </li>

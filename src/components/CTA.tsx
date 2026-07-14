@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
+import { trackEvent } from '../lib/analytics'
 
 export default function CTA() {
   return (
@@ -20,6 +21,7 @@ export default function CTA() {
         </p>
         <Link
           to="/start"
+          onClick={() => trackEvent('cta_click', { location: 'cta_section' })}
           className="mt-8 inline-block rounded-full bg-white px-8 py-3.5 text-sm font-medium text-ink transition-transform hover:scale-105 active:scale-95"
         >
           Start a project

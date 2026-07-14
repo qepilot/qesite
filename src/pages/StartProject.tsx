@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
+import { trackEvent } from '../lib/analytics'
 
 type FormState = {
   name: string
@@ -59,6 +60,7 @@ export default function StartProject() {
         throw new Error(data.error || 'Something went wrong.')
       }
       setSubmitted(true)
+      trackEvent('start_project_submit', { role: form.role, tracker: form.tracker })
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Could not send. Please try again.')
     } finally {
