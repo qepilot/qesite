@@ -51,6 +51,20 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Normalize FTP server directory
+        id: ftp_dir
+        env:
+          RAW_DIR: ${{ secrets.FTP_SERVER_DIR }}
+        run: |
+          if [ -z "$RAW_DIR" ]; then
+            echo "::error::FTP_SERVER_DIR secret is empty"
+            exit 1
+          fi
+          # FTP-Deploy-Action requires a trailing slash
+          DIR="${RAW_DIR%/}/"
+          echo "server_dir=$DIR" >> "$GITHUB_OUTPUT"
+          echo "Using server-dir ending in / (length ${#DIR})"
+
       - name: Sync source to Hostinger (FTP)
         uses: SamKirkland/FTP-Deploy-Action@v4.3.6
         with:
@@ -59,8 +73,8 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftps
           port: 21
-          # hPanel Node.js application root, trailing slash required
-          server-dir: ${{ secrets.FTP_SERVER_DIR }}
+          # hPanel Node.js application root (trailing / enforced above)
+          server-dir: ${{ steps.ftp_dir.outputs.server_dir }}
           exclude: |
             **/.git*
             **/.git*/**
