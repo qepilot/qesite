@@ -1,7 +1,8 @@
 name: Playwright
 
-# PRs are gated here; pushes to main are tested + deployed by deploy.yml.
 on:
+  push:
+    branches: [main]
   pull_request:
     branches: [main]
 

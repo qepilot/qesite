@@ -1,17 +1,15 @@
 #!/usr/bin/env bash
-# Package QEPilot for Hostinger Node.js hosting.
-# We build AND prerender locally, then ship the finished dist/ so Hostinger just
-# serves it (Hostinger can't run Chromium, so it must NOT rebuild — that would
-# drop the prerendered HTML AI crawlers rely on). node_modules/ and .env are
-# still left out: Hostinger installs runtime deps, secrets live in hPanel.
+# Package QEPilot SOURCE for Hostinger Node.js hosting. Hostinger runs
+# `npm install` + `npm run build` itself; the build injects the committed
+# prerendered/ snapshots (no Chromium needed on the server). So we ship the
+# source tree INCLUDING prerendered/, but not node_modules/, dist/, or .env.
 #
-# Prerendering needs a local Chromium. `npm run build:prerender` degrades to a
-# plain (non-prerendered) build if none is available — install one with
-# `npx playwright install chromium` for full benefit.
+# We refresh the prerender snapshots first (needs a local Chromium); if none is
+# available the existing committed snapshots are shipped unchanged.
 #
 # Usage:
-#   ./scripts/hostinger-deploy.sh              # build + write zip only
-#   ./scripts/hostinger-deploy.sh --upload      # build + zip + FTP upload (needs .env.deploy)
+#   ./scripts/hostinger-deploy.sh              # refresh snapshots + write zip
+#   ./scripts/hostinger-deploy.sh --upload      # same + FTP upload (needs .env.deploy)
 #
 # Optional .env.deploy (gitignored):
 #   FTP_SERVER=ftp.example.hostinger.com
@@ -44,27 +42,29 @@ for arg in "$@"; do
   esac
 done
 
-echo "→ Building + prerendering…"
-npm run build:prerender
-
-if [[ ! -f "$ROOT/dist/index.html" ]]; then
-  echo "Build did not produce dist/index.html — aborting." >&2
-  exit 1
-fi
+echo "→ Refreshing prerender snapshots (needs local Chromium; skipped if absent)…"
+npm run prerender || echo "  (prerender skipped — shipping existing prerendered/ snapshots)"
 
 mkdir -p "$OUT_DIR"
 rm -f "$ZIP_PATH"
 
-echo "→ Packaging prebuilt site for Hostinger…"
+echo "→ Packaging source (Hostinger builds + injects snapshots)…"
 
-# Ship the runtime files + the prebuilt/prerendered dist. No source or build
-# tooling — Hostinger serves this as-is and must not rebuild.
+# Full source tree Hostinger needs to build, INCLUDING prerendered/ snapshots.
 zip -r "$ZIP_PATH" \
   package.json \
   package-lock.json \
   server.js \
+  index.html \
+  vite.config.ts \
+  tsconfig.json \
+  tsconfig.app.json \
+  tsconfig.node.json \
+  .oxlintrc.json \
   .env.example \
-  dist \
+  public \
+  src \
+  prerendered \
   -x "*.DS_Store" \
   >/dev/null
 
@@ -75,7 +75,7 @@ echo "…"
 if [[ "$UPLOAD" != true ]]; then
   echo
   echo "Zip ready. Upload & extract in hPanel File Manager, then:"
-  echo "  Run NPM Install (runtime deps only) → Restart   # do NOT run a build"
+  echo "  Run NPM Install → Run NPM Build → Restart"
   echo
   echo "Or set .env.deploy and re-run with --upload."
   exit 0
@@ -122,4 +122,4 @@ else
 fi
 
 echo "✓ Upload complete."
-echo "In hPanel Node.js app: Run NPM Install (if deps changed) → Restart. Do NOT run a build."
+echo "In hPanel Node.js app: Run NPM Install (if deps changed) → Run NPM Build → Restart."
