@@ -3,13 +3,13 @@ import { Link } from 'react-router-dom'
 
 export default function CTA() {
   return (
-    <section id="contact" className="px-6 pb-24 bg-bg">
+    <section id="contact" className="mesh-gradient px-6 py-24">
       <motion.div
         initial={{ opacity: 0, scale: 0.96 }}
         whileInView={{ opacity: 1, scale: 1 }}
         viewport={{ once: true, amount: 0.4 }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
-        className="mesh-gradient relative mx-auto max-w-4xl overflow-hidden rounded-[2.5rem] px-8 py-16 text-center"
+        className="relative mx-auto max-w-4xl text-center"
       >
         <h2 className="font-display text-3xl md:text-5xl font-semibold tracking-tight text-white">
           Ready to ship tested features faster?
