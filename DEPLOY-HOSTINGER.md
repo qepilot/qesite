@@ -73,6 +73,34 @@ and secrets belong in hPanel's environment variables, not a file.
 
 ## Redeploying after future changes
 
-Re-upload the changed source files via File Manager (or re-upload this
-whole zip and re-extract, overwriting), then in hPanel: **Run NPM Install**
-(only needed if dependencies changed) → run the build again → **Restart**.
+### Automated (recommended): merge to `main`
+
+PRs run Playwright smoke tests. After a PR merges into `main`, GitHub Actions:
+
+1. Re-runs those smoke tests
+2. Syncs source to your Hostinger Node app root over FTPS
+3. Leaves Hostinger to install/build (same as a manual zip upload)
+
+**One-time GitHub secrets** (repo → Settings → Secrets and variables → Actions):
+
+| Secret | Example |
+|--------|---------|
+| `FTP_SERVER` | `ftp.YOUR_HOSTINGER_HOST` (from hPanel → Files → FTP Accounts) |
+| `FTP_USERNAME` | your FTP user |
+| `FTP_PASSWORD` | your FTP password |
+| `FTP_SERVER_DIR` | Node app root with trailing slash, e.g. `/domains/qepilot.live/public_html/` |
+
+Then open **Actions → Deploy Hostinger** and confirm the first run, or merge any PR to `main`. You can also trigger **Run workflow** manually.
+
+After the sync, if Hostinger did not auto-rebuild: **Run NPM Install** (deps changed) → build → **Restart**.
+
+Optional: connect the same GitHub repo in hPanel’s Node.js / Git integration so Hostinger also auto-pulls `main` — CI still gates quality before merge.
+
+### Manual zip / local upload
+
+```bash
+npm run deploy:hostinger           # writes deploy-artifacts/qepilot-hostinger-deploy.zip
+npm run deploy:hostinger:upload    # requires .env.deploy (see scripts/hostinger-deploy.sh)
+```
+
+Re-upload/extract via File Manager (or use `--upload`), then in hPanel: **Run NPM Install** (if deps changed) → build → **Restart**.

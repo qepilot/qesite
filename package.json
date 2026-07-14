@@ -14,7 +14,9 @@
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "pretest:e2e": "npm run build",
-    "pretest:e2e:ui": "npm run build"
+    "pretest:e2e:ui": "npm run build",
+    "deploy:hostinger": "bash scripts/hostinger-deploy.sh",
+    "deploy:hostinger:upload": "bash scripts/hostinger-deploy.sh --upload"
   },
   "dependencies": {
     "cors": "^2.8.6",

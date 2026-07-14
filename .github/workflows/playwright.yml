@@ -1,8 +1,7 @@
 name: Playwright
 
+# PR checks only — merges to main run tests inside Deploy Hostinger.
 on:
-  push:
-    branches: [main]
   pull_request:
     branches: [main]
 
