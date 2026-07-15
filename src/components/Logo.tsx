@@ -1,22 +1,31 @@
 export default function Logo({ className = 'h-9 w-9' }: { className?: string }) {
   return (
-    <svg viewBox="0 0 100 100" className={className} aria-hidden="true">
-      <defs>
-        <linearGradient id="qepilotLogoGrad" x1="0" y1="0" x2="100" y2="100">
-          <stop offset="0%" stopColor="#5eead4" />
-          <stop offset="55%" stopColor="#7c5cff" />
-          <stop offset="100%" stopColor="#4f46e5" />
-        </linearGradient>
-      </defs>
-      <rect x="4" y="4" width="92" height="92" rx="24" fill="url(#qepilotLogoGrad)" />
-      <path
-        d="M29 51.5L43 65.5L75 33.5"
-        fill="none"
-        stroke="white"
-        strokeWidth="10"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+    <svg viewBox="0 0 240 240" className={className} aria-hidden="true">
+      <rect x="0" y="0" width="240" height="240" rx="52" fill="#3b82f6" />
+      <line x1="120" y1="46" x2="120" y2="24" stroke="#ffffff" strokeWidth="5" strokeLinecap="round" />
+      <circle cx="120" cy="17" r="8" fill="#f59e0b" />
+      <rect x="65" y="46" width="110" height="86" rx="24" fill="#ffffff" />
+      <circle cx="94" cy="86" r="8" fill="#3b82f6" />
+      <circle cx="146" cy="86" r="8" fill="#3b82f6" />
+      <path d="M96 108 Q120 122 144 108" fill="none" stroke="#3b82f6" strokeWidth="5" strokeLinecap="round" />
+      <rect x="80" y="136" width="80" height="62" rx="18" fill="#ffffff" />
+      <circle cx="120" cy="167" r="11" fill="#3b82f6" />
+      <path d="M160 152 L192 178" stroke="#ffffff" strokeWidth="10" strokeLinecap="round" />
+      <g transform="translate(192,178) rotate(35)">
+        <rect x="-9" y="-26" width="18" height="32" rx="6" fill="#ffffff" />
+        <circle cx="-8" cy="-26" r="9" fill="none" stroke="#ffffff" strokeWidth="5.5" />
+        <circle cx="8" cy="-26" r="9" fill="none" stroke="#ffffff" strokeWidth="5.5" />
+      </g>
+      <g transform="translate(186,194)">
+        <line x1="-4" y1="-17" x2="-15" y2="-28" stroke="#1e293b" strokeWidth="2.5" strokeLinecap="round" />
+        <line x1="4" y1="-17" x2="15" y2="-28" stroke="#1e293b" strokeWidth="2.5" strokeLinecap="round" />
+        <ellipse cx="0" cy="0" rx="21" ry="17" fill="#ef4444" />
+        <line x1="0" y1="-17" x2="0" y2="17" stroke="#1e293b" strokeWidth="2" />
+        <circle cx="-9" cy="-5" r="3" fill="#1e293b" />
+        <circle cx="9" cy="-5" r="3" fill="#1e293b" />
+        <circle cx="-9" cy="7" r="3" fill="#1e293b" />
+        <circle cx="9" cy="7" r="3" fill="#1e293b" />
+      </g>
     </svg>
   )
 }
